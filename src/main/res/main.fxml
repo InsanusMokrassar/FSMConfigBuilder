@@ -41,10 +41,10 @@
          <content>
             <VBox maxWidth="1.7976931348623157E308">
                <children>
-                  <TableView minHeight="165.0" prefHeight="165.0">
+                  <TableView fx:id="statesTableView" minHeight="165.0" prefHeight="165.0">
                     <columns>
-                        <TableColumn fx:id="numColumn" editable="false" prefWidth="75.0" resizable="false" text="N" />
-                      <TableColumn fx:id="acceptColumn" prefWidth="75.0" resizable="false" sortable="false" text="Accept" />
+                        <TableColumn fx:id="numColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="50.0" resizable="false" text="N" />
+                      <TableColumn fx:id="acceptColumn" prefWidth="100.0" resizable="false" sortable="false" text="Accept" />
                       <TableColumn fx:id="errorColumn" prefWidth="75.0" resizable="false" sortable="false" text="Error" />
                         <TableColumn fx:id="returnColumn" prefWidth="75.0" resizable="false" sortable="false" text="Return" />
                         <TableColumn fx:id="nextColumn" prefWidth="75.0" resizable="false" sortable="false" text="Next" />

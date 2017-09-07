@@ -21,14 +21,14 @@
    <bottom>
       <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                <content>
-                  <Label fx:id="previewLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Here will config preview" />
+                  <Label fx:id="previewLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Here will config preview" wrapText="true" />
                </content>
             </ScrollPane>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                 <content>
-                    <Label fx:id="errorLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Here will errors" />
+                    <Label fx:id="errorLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Here will errors" wrapText="true" />
                 </content>
             </ScrollPane>
         </items>

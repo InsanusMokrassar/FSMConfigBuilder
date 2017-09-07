@@ -2,49 +2,42 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.insanusmokrassar.FSMConfigBuilder.controllers.ConfigBuilder">
-   <top>
-      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <items>
-             <Button fx:id="newBtn" mnemonicParsing="false" text="New" />
-            <Button fx:id="loadBtn" layoutX="10.0" layoutY="11.0" mnemonicParsing="false" text="Load" />
-             <Button fx:id="saveBtn" mnemonicParsing="false" text="Save" />
-         </items>
-      </ToolBar>
-   </top>
-   <bottom>
-       <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
-           <Label fx:id="infoLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                  text="Here will errors" wrapText="true"/>
-       </ScrollPane>
-   </bottom>
    <center>
-      <TableView fx:id="statesTableView" editable="true" minHeight="165.0" prefHeight="165.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="statesTableView" editable="true" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn fx:id="numColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="50.0" resizable="false" text="N" />
-          <TableColumn fx:id="acceptColumn" prefWidth="70.0" resizable="false" sortable="false" text="Accept" />
-          <TableColumn fx:id="errorColumn" prefWidth="61.0" resizable="false" sortable="false" text="Error" />
-            <TableColumn fx:id="stackColumn" prefWidth="60.0" resizable="false" sortable="false" text="Stack" />
-            <TableColumn fx:id="nextColumn" prefWidth="56.0" resizable="false" sortable="false" text="Next" />
-            <TableColumn fx:id="regexColumn" prefWidth="105.0" sortable="false" text="Regex" />
-            <TableColumn fx:id="callbackColumn" prefWidth="123.0" resizable="false" sortable="false" text="Callback" />
+            <TableColumn fx:id="numColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="37.0" resizable="false" text="N" />
+          <TableColumn fx:id="acceptColumn" prefWidth="71.0" resizable="false" sortable="false" text="Accept" />
+          <TableColumn fx:id="errorColumn" prefWidth="49.0" resizable="false" sortable="false" text="Error" />
+            <TableColumn fx:id="stackColumn" prefWidth="51.0" resizable="false" sortable="false" text="Stack" />
+            <TableColumn fx:id="nextColumn" prefWidth="48.0" resizable="false" sortable="false" text="Next" />
+            <TableColumn fx:id="regexColumn" prefWidth="131.0" sortable="false" text="Regex" />
+            <TableColumn fx:id="callbackColumn" prefWidth="138.0" resizable="false" sortable="false" text="Callback" />
         </columns>
       </TableView>
    </center>
-   <right>
-      <ToolBar nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" BorderPane.alignment="CENTER">
+   <bottom>
+        <Label fx:id="infoLabel" text="Here will errors" BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
+            <Label layoutX="189.0" layoutY="16.0" text="Config:" />
+             <Button fx:id="newBtn" mnemonicParsing="false" text="New" />
+            <Button fx:id="loadBtn" layoutX="10.0" layoutY="11.0" mnemonicParsing="false" text="Load" />
+             <Button fx:id="saveBtn" mnemonicParsing="false" text="Save" />
+             <Button fx:id="verifyBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Verify" />
+            <Separator orientation="VERTICAL" />
+            <Label text="Rows:" />
             <Button fx:id="addBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-            <Button fx:id="removeBtn" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" />
-             <Button fx:id="generateBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Generate" />
+            <Button fx:id="removeBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" />
          </items>
       </ToolBar>
-   </right>
+   </top>
 </BorderPane>

@@ -1,6 +1,8 @@
 package com.github.insanusmokrassar.FSMConfigBuilder.controllers
 
 import com.github.insanusmokrassar.FSMConfigBuilder.models.StateRow
+import com.github.insanusmokrassar.FSMConfigBuilder.scenesManager
+import com.github.insanusmokrassar.FSMConfigBuilder.utils.ScenesManager
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.ObservableList
@@ -13,9 +15,11 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.control.cell.TextFieldTableCell
+import javafx.stage.FileChooser
 import javafx.util.Callback
 import javafx.util.converter.DefaultStringConverter
 import javafx.util.converter.IntegerStringConverter
+import java.io.File
 import java.net.URL
 import java.util.*
 import java.util.logging.Logger
@@ -29,7 +33,7 @@ class ConfigBuilder : Initializable {
     var infoLabel: Label? = null
 
     @FXML
-    var generateBtn: Button? = null
+    var verifyBtn: Button? = null
 
     @FXML
     var saveBtn: Button? = null
@@ -139,16 +143,57 @@ class ConfigBuilder : Initializable {
             inFocus?.let {
                 statesList.remove(it)
                 recalculateNums()
-                return@EventHandler
             }
-            sendInfo("You must choose the row to delete")
         }
 
-        generateBtn?.onAction = EventHandler {
+        verifyBtn?.onAction = EventHandler {
             if (!checkConfigAndShowError()) {
-                sendInfo(generateConfig())
-                return@EventHandler
+                sendInfo("All right")
             }
+        }
+
+        newBtn?.onAction = EventHandler {
+            statesList.clear()
+            sendInfo("Cleaned")
+        }
+
+        saveBtn?.onAction = EventHandler {
+            if (!checkConfigAndShowError()) {
+                scenesManager?.let {
+                    val file = chooseFile("Save config", it)
+                    file?.let {
+                        val config = generateConfig()
+                        if (!it.exists()) {
+                            it.createNewFile()
+                        }
+                        val stream = it.outputStream()
+                        stream.write("$config\n".toByteArray())
+                        stream.flush()
+                        stream.close()
+                        return@EventHandler
+                    }
+                    sendInfo("If you want to save config, you must choose target file path")
+                }
+            }
+        }
+    }
+
+    private fun chooseFile(
+            title: String,
+            scenesManager: ScenesManager,
+            extensions: Map<String, String> = mapOf(
+                    Pair("Any file", "*")
+            )
+    ): File? {
+        val fileChooser = FileChooser()
+        fileChooser.title = title
+        extensions.forEach { k, v -> fileChooser.extensionFilters.add(
+                FileChooser.ExtensionFilter(k, v)
+        ) }
+        return try {
+            fileChooser.showOpenDialog(scenesManager.current.window)
+        } catch (e: IllegalStateException) {
+            null
         }
     }
 

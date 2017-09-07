@@ -4,11 +4,11 @@ import com.github.insanusmokrassar.FSMConfigBuilder.utils.ScenesManager
 import javafx.application.Application
 import javafx.stage.Stage
 
+var scenesManager: ScenesManager? = null
 class FSMConfigBuilderApplication(
         private val title: String = "FSM Config Builder",
         private val version: Float = 0.1F
 ) : Application() {
-    private var scenesManager: ScenesManager? = null
     override fun start(primaryStage: Stage?) {
         primaryStage?.let {
             it.title = "$title $version"

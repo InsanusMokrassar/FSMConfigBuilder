@@ -79,8 +79,19 @@ class ConfigBuilder : Initializable {
     override fun initialize(location: URL?, resources: ResourceBundle?) {
 
         //Say me how to do better??? -----
-        numColumn?.cellValueFactory = Callback {
-            it.value.numProperty as? ObservableValue<Int>
+        numColumn?.let {
+            it.cellValueFactory = Callback {
+                it.value.numProperty as? ObservableValue<Int>
+            }
+            it.cellFactory = Callback {
+                TextFieldTableCell<StateRow, Int>(IntegerStringConverter())
+            }
+            it.onEditCommit = EventHandler {
+                val rowValue = it.rowValue
+                statesList.remove(rowValue)
+                statesList.add(it.newValue, rowValue)
+                recalculateNums()
+            }
         }
         nextColumn?.let {
             it.cellValueFactory = Callback {

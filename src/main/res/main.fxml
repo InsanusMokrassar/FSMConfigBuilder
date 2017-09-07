@@ -12,7 +12,7 @@
    <center>
       <TableView fx:id="statesTableView" editable="true" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn fx:id="numColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="37.0" resizable="false" text="N" />
+            <TableColumn fx:id="numColumn" prefWidth="37.0" resizable="false" text="N" />
           <TableColumn fx:id="acceptColumn" prefWidth="71.0" resizable="false" sortable="false" text="Accept" />
           <TableColumn fx:id="errorColumn" prefWidth="49.0" resizable="false" sortable="false" text="Error" />
             <TableColumn fx:id="stackColumn" prefWidth="51.0" resizable="false" sortable="false" text="Stack" />

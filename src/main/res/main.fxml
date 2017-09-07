@@ -8,14 +8,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.insanusmokrassar.FSMConfigBuilder.controllers.ConfigBuilder">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.insanusmokrassar.FSMConfigBuilder.controllers.ConfigBuilder">
    <top>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
              <Button fx:id="newBtn" mnemonicParsing="false" text="New" />
-             <Button fx:id="generateBtn" mnemonicParsing="false" text="Generate" />
              <Button fx:id="saveBtn" mnemonicParsing="false" text="Save" />
          </items>
       </ToolBar>
@@ -37,25 +35,25 @@
       </SplitPane>
    </bottom>
    <center>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <content>
-            <VBox maxWidth="1.7976931348623157E308">
-               <children>
-                  <TableView fx:id="statesTableView" minHeight="165.0" prefHeight="165.0">
-                    <columns>
-                        <TableColumn fx:id="numColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="50.0" resizable="false" text="N" />
-                      <TableColumn fx:id="acceptColumn" prefWidth="100.0" resizable="false" sortable="false" text="Accept" />
-                      <TableColumn fx:id="errorColumn" prefWidth="75.0" resizable="false" sortable="false" text="Error" />
-                        <TableColumn fx:id="returnColumn" prefWidth="75.0" resizable="false" sortable="false" text="Return" />
-                        <TableColumn fx:id="nextColumn" prefWidth="75.0" resizable="false" sortable="false" text="Next" />
-                        <TableColumn fx:id="regexColumn" prefWidth="75.0" sortable="false" text="Regex" />
-                        <TableColumn fx:id="callbackColumn" prefWidth="75.0" resizable="false" sortable="false" text="Callback" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="addRowBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add row" />
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
+      <TableView fx:id="statesTableView" editable="true" minHeight="165.0" prefHeight="165.0" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn fx:id="numColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="50.0" resizable="false" text="N" />
+          <TableColumn fx:id="acceptColumn" prefWidth="70.0" resizable="false" sortable="false" text="Accept" />
+          <TableColumn fx:id="errorColumn" prefWidth="61.0" resizable="false" sortable="false" text="Error" />
+            <TableColumn fx:id="stackColumn" prefWidth="60.0" resizable="false" sortable="false" text="Stack" />
+            <TableColumn fx:id="nextColumn" prefWidth="56.0" resizable="false" sortable="false" text="Next" />
+            <TableColumn fx:id="regexColumn" prefWidth="105.0" sortable="false" text="Regex" />
+            <TableColumn fx:id="callbackColumn" prefWidth="123.0" resizable="false" sortable="false" text="Callback" />
+        </columns>
+      </TableView>
    </center>
+   <right>
+      <ToolBar nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" BorderPane.alignment="CENTER">
+         <items>
+            <Button fx:id="addRowBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
+            <Button fx:id="addRowBtn1" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" />
+             <Button fx:id="generateBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Generate" />
+         </items>
+      </ToolBar>
+   </right>
 </BorderPane>

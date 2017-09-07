@@ -1,6 +1,8 @@
 package com.github.insanusmokrassar.FSMConfigBuilder.controllers
 
+import com.github.insanusmokrassar.FSMConfigBuilder.argumentsField
 import com.github.insanusmokrassar.FSMConfigBuilder.models.StateRow
+import com.github.insanusmokrassar.FSMConfigBuilder.packageField
 import com.github.insanusmokrassar.FSMConfigBuilder.scenesManager
 import com.github.insanusmokrassar.FSMConfigBuilder.utils.ScenesManager
 import javafx.beans.value.ObservableValue
@@ -9,18 +11,18 @@ import javafx.collections.ObservableList
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
+import javafx.scene.control.*
 import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.control.cell.TextFieldTableCell
 import javafx.stage.FileChooser
 import javafx.util.Callback
 import javafx.util.converter.DefaultStringConverter
 import javafx.util.converter.IntegerStringConverter
+import org.json.JSONArray
+import org.json.JSONException
 import java.io.File
 import java.net.URL
+import java.nio.charset.Charset
 import java.util.*
 import java.util.logging.Logger
 import kotlin.collections.ArrayList
@@ -80,10 +82,10 @@ class ConfigBuilder : Initializable {
         numColumn?.cellValueFactory = Callback {
             it.value.numProperty as? ObservableValue<Int>
         }
-        nextColumn?.cellValueFactory = Callback {
-            it.value.nextProperty as? ObservableValue<Int>
-        }
         nextColumn?.let {
+            it.cellValueFactory = Callback {
+                it.value.nextProperty as? ObservableValue<Int>
+            }
             it.cellFactory = Callback {
                 TextFieldTableCell<StateRow, Int>(IntegerStringConverter())
             }
@@ -93,6 +95,9 @@ class ConfigBuilder : Initializable {
             }
         }
         regexColumn?.let {
+            it.cellValueFactory = Callback {
+                it.value.regexProperty
+            }
             it.cellFactory = Callback {
                 TextFieldTableCell<StateRow, String>(DefaultStringConverter())
             }
@@ -102,6 +107,9 @@ class ConfigBuilder : Initializable {
             }
         }
         callbackColumn?.let {
+            it.cellValueFactory = Callback {
+                it.value.callbackProperty
+            }
             it.cellFactory = Callback {
                 TextFieldTableCell<StateRow, String>(DefaultStringConverter())
             }
@@ -160,7 +168,11 @@ class ConfigBuilder : Initializable {
         saveBtn?.onAction = EventHandler {
             if (!checkConfigAndShowError()) {
                 scenesManager?.let {
-                    val file = chooseFile("Save config", it)
+                    val file = chooseFile(
+                            "Save config",
+                            it,
+                            "If you want to save config, you must choose target file path"
+                    )
                     file?.let {
                         val config = generateConfig()
                         if (!it.exists()) {
@@ -172,15 +184,75 @@ class ConfigBuilder : Initializable {
                         stream.close()
                         return@EventHandler
                     }
-                    sendInfo("If you want to save config, you must choose target file path")
+                }
+            }
+        }
+
+        loadBtn?.onAction = EventHandler {
+            scenesManager?.let {
+                val file = chooseFile(
+                        "Save config",
+                        it,
+                        "If you want to load config, you must choose target file")
+                file?.let {
+                    if (it.exists()) {
+                        if (loadConfig(it.readBytes().toString(Charset.defaultCharset()))) {
+                            sendInfo("Successfuly loaded")
+                        } else {
+                            sendInfo("Not loaded")
+                        }
+                    }
                 }
             }
         }
     }
 
+    private fun loadConfig(config: String): Boolean {
+        try {
+            val configList = JSONArray(config)
+            val states = ArrayList<StateRow>()
+            for (i: Int in 0 until configList.length()) {
+                val currentStateConfig = configList.getJSONArray(i)
+                val currentState = StateRow()
+                currentState.numProperty.set(i)
+                currentState.acceptProperty.set(currentStateConfig.getBoolean(0))
+                currentState.errorProperty.set(currentStateConfig.getBoolean(1))
+                currentState.stackProperty.set(currentStateConfig.getBoolean(2))
+                currentState.regexProperty.set(currentStateConfig.getString(3))
+                try {
+                    currentState.nextProperty.set(currentStateConfig.getInt(4))
+                } catch (e: Exception) {
+                    currentState.nextProperty.set(-1)
+                }
+                try {
+                    val callbackConfig = currentStateConfig.getJSONObject(5)
+                    currentState.callbackProperty.set(callbackConfig.getString(packageField))
+                    try {
+                        val argumentsConfig = callbackConfig.getJSONArray(argumentsField)
+                        for (argumentNum: Int in 0 until argumentsConfig.length()) {
+                            currentState.callbackArguments.add(argumentsConfig.get(argumentNum))
+                        }
+                    } catch(e: Exception) {
+                        currentState.callbackArguments.add(callbackConfig.get(argumentsField))
+                    }
+                } catch (e: Exception) {
+
+                }
+                states.add(currentState)
+            }
+            statesList.clear()
+            statesList.addAll(states)
+            return true
+        } catch (e: JSONException) {
+            sendInfo("Can't load config")
+        }
+        return false
+    }
+
     private fun chooseFile(
             title: String,
             scenesManager: ScenesManager,
+            cancelMessage: String,
             extensions: Map<String, String> = mapOf(
                     Pair("Any file", "*")
             )
@@ -193,6 +265,7 @@ class ConfigBuilder : Initializable {
         return try {
             fileChooser.showOpenDialog(scenesManager.current.window)
         } catch (e: IllegalStateException) {
+            sendInfo(cancelMessage)
             null
         }
     }

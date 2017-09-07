@@ -24,7 +24,7 @@ import kotlin.collections.ArrayList
 
 class ConfigBuilder : Initializable {
 
-    val statesList: ObservableList<StateRow> = observableArrayList()
+    private val statesList: ObservableList<StateRow> = observableArrayList()
 
     @FXML
     var previewLabel: Label? = null
@@ -40,6 +40,9 @@ class ConfigBuilder : Initializable {
 
     @FXML
     var newBtn: Button? = null
+
+    @FXML
+    var loadBtn: Button? = null
 
     @FXML
     var statesTableView: TableView<StateRow>? = null
@@ -105,7 +108,6 @@ class ConfigBuilder : Initializable {
             it.onEditCommit = EventHandler {
                 it.rowValue.nextProperty.set(it.newValue)
                 checkConfigAndShowError()
-
             }
         }
         regexColumn?.cellValueFactory = Callback {

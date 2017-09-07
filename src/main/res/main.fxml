@@ -14,6 +14,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
              <Button fx:id="newBtn" mnemonicParsing="false" text="New" />
+            <Button fx:id="loadBtn" layoutX="10.0" layoutY="11.0" mnemonicParsing="false" text="Load" />
              <Button fx:id="saveBtn" mnemonicParsing="false" text="Save" />
          </items>
       </ToolBar>

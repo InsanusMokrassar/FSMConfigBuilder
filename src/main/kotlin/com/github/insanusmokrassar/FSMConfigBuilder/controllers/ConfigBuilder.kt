@@ -41,7 +41,7 @@ class ConfigBuilder : Initializable {
     var saveBtn: Button? = null
 
     @FXML
-    var newBtn: Button? = null
+    var clearBtn: Button? = null
 
     @FXML
     var loadBtn: Button? = null
@@ -160,7 +160,7 @@ class ConfigBuilder : Initializable {
             }
         }
 
-        newBtn?.onAction = EventHandler {
+        clearBtn?.onAction = EventHandler {
             statesList.clear()
             sendInfo("Cleaned")
         }

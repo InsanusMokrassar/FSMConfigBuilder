@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonType?>
-<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.insanusmokrassar.FSMConfigBuilder.controllers.ConfigBuilder">
    <center>
@@ -34,10 +29,10 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
             <Label layoutX="189.0" layoutY="16.0" text="Config:" />
-             <Button fx:id="newBtn" mnemonicParsing="false" text="New" />
+            <Button fx:id="clearBtn" mnemonicParsing="false" text="Clear" />
             <Button fx:id="loadBtn" layoutX="10.0" layoutY="11.0" mnemonicParsing="false" text="Load" />
-             <Button fx:id="saveBtn" mnemonicParsing="false" text="Save" />
-             <Button fx:id="verifyBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Verify" />
+            <Button fx:id="saveBtn" mnemonicParsing="false" text="Save" />
+            <Button fx:id="verifyBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Verify" />
             <Separator orientation="VERTICAL" />
             <Label text="Rows:" />
             <Button fx:id="addBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />

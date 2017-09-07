@@ -14,8 +14,15 @@ data class StateRow(
         var callbackProperty: SimpleStringProperty = SimpleStringProperty()
 ) {
     fun isValid(): Boolean {
-        return numProperty.get() >= 0
-                && !(nextProperty.get() == -1 && stackProperty.get())
+        return numProperty.get() >= 0 &&
+                nextProperty.get() >= -1 &&
+                !(nextProperty.get() == -1 && stackProperty.get()) &&
+                try {
+                    Regex(regexProperty.get())
+                    true
+                } catch (e: Exception) {
+                    false
+                }
     }
 
     override fun toString(): String {
@@ -23,9 +30,9 @@ data class StateRow(
                 "${acceptProperty.get()}," +
                 "${errorProperty.get()}," +
                 "${stackProperty.get()}," +
-                "${regexProperty.get()}," +
+                "\"${Regex(regexProperty.get()).pattern}\"," +
                 (if (nextProperty.get() == -1) "null" else nextProperty.get().toString()) +
-                (if (callbackProperty.get() != null && callbackProperty.get().isNotEmpty()) ",${callbackProperty.get()}" else "") +
+                (if (callbackProperty.get() != null && callbackProperty.get().isNotEmpty()) ",{\"package\":\"${callbackProperty.get()}\"}" else "") +
                 "]"
     }
 }

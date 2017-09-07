@@ -1,22 +1,21 @@
 package com.github.insanusmokrassar.FSMConfigBuilder.controllers
 
 import com.github.insanusmokrassar.FSMConfigBuilder.models.StateRow
-import com.github.insanusmokrassar.IObjectKRealisations.JSONIObject
-import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.ObservableList
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.control.*
+import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
 import javafx.scene.control.cell.CheckBoxTableCell
-import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.control.cell.TextFieldTableCell
 import javafx.util.Callback
-import javafx.util.StringConverter
-import org.json.JSONArray
-import org.json.JSONObject
+import javafx.util.converter.DefaultStringConverter
+import javafx.util.converter.IntegerStringConverter
 import java.net.URL
 import java.util.*
 import java.util.logging.Logger
@@ -27,10 +26,7 @@ class ConfigBuilder : Initializable {
     private val statesList: ObservableList<StateRow> = observableArrayList()
 
     @FXML
-    var previewLabel: Label? = null
-
-    @FXML
-    var errorLabel: Label? = null
+    var infoLabel: Label? = null
 
     @FXML
     var generateBtn: Button? = null
@@ -69,7 +65,10 @@ class ConfigBuilder : Initializable {
     var callbackColumn: TableColumn<StateRow, String>? = null
 
     @FXML
-    var addRowBtn: Button? = null
+    var addBtn: Button? = null
+
+    @FXML
+    var removeBtn: Button? = null
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
 
@@ -82,53 +81,44 @@ class ConfigBuilder : Initializable {
         }
         nextColumn?.let {
             it.cellFactory = Callback {
-                TextFieldTableCell<StateRow, Int>(
-                        object: StringConverter<Int>() {
-                            override fun toString(what: Int?): String {
-                                what?.let {
-                                    return it.toString()
-                                }
-                                return "null"
-                            }
-
-                            override fun fromString(string: String?): Int {
-                                string?.let {
-                                    try {
-                                        return it.toInt()
-                                    } catch (e: NumberFormatException) {
-                                        sendError("You have typed not integer")
-                                    }
-                                }
-                                return -1
-                            }
-
-                        }
-                )
+                TextFieldTableCell<StateRow, Int>(IntegerStringConverter())
             }
             it.onEditCommit = EventHandler {
                 it.rowValue.nextProperty.set(it.newValue)
                 checkConfigAndShowError()
             }
         }
-        regexColumn?.cellValueFactory = Callback {
-            it.value.regexProperty
+        regexColumn?.let {
+            it.cellFactory = Callback {
+                TextFieldTableCell<StateRow, String>(DefaultStringConverter())
+            }
+            it.onEditCommit = EventHandler {
+                it.rowValue.regexProperty.set(it.newValue)
+                checkConfigAndShowError()
+            }
         }
-        callbackColumn?.cellValueFactory = Callback {
-            it.value.callbackProperty
+        callbackColumn?.let {
+            it.cellFactory = Callback {
+                TextFieldTableCell<StateRow, String>(DefaultStringConverter())
+            }
+            it.onEditCommit = EventHandler {
+                it.rowValue.callbackProperty.set(it.newValue)
+                checkConfigAndShowError()
+            }
         }
 
-        acceptColumn?.cellFactory = Callback{
-            CheckBoxTableCell<StateRow, Boolean>( Callback{
+        acceptColumn?.cellFactory = Callback {
+            CheckBoxTableCell<StateRow, Boolean>(Callback {
                 statesList[it].acceptProperty
             })
         }
-        errorColumn?.cellFactory = Callback{
-            CheckBoxTableCell<StateRow, Boolean>( Callback{
+        errorColumn?.cellFactory = Callback {
+            CheckBoxTableCell<StateRow, Boolean>(Callback {
                 statesList[it].errorProperty
             })
         }
-        stackColumn?.cellFactory = Callback{
-            CheckBoxTableCell<StateRow, Boolean>( Callback{
+        stackColumn?.cellFactory = Callback {
+            CheckBoxTableCell<StateRow, Boolean>(Callback {
                 statesList[it].stackProperty
             })
         }
@@ -136,7 +126,7 @@ class ConfigBuilder : Initializable {
 
         statesTableView?.items = statesList
 
-        addRowBtn?.onAction = EventHandler {
+        addBtn?.onAction = EventHandler {
             if (!checkConfigAndShowError()) {
                 val newState = StateRow()
                 newState.numProperty.set(statesList.size)
@@ -144,11 +134,29 @@ class ConfigBuilder : Initializable {
             }
         }
 
-        generateBtn?.onAction = EventHandler {
-            if (!checkConfigAndShowError()) {
-                previewLabel?.text = generateConfig()
+        removeBtn?.onAction = EventHandler {
+            val inFocus = statesTableView?.focusModel?.focusedItem
+            inFocus?.let {
+                statesList.remove(it)
+                recalculateNums()
                 return@EventHandler
             }
+            sendInfo("You must choose the row to delete")
+        }
+
+        generateBtn?.onAction = EventHandler {
+            if (!checkConfigAndShowError()) {
+                sendInfo(generateConfig())
+                return@EventHandler
+            }
+        }
+    }
+
+    private fun recalculateNums() {
+        var i = 0
+        statesList.forEach {
+            it.numProperty.set(i)
+            i++
         }
     }
 
@@ -166,7 +174,7 @@ class ConfigBuilder : Initializable {
     private fun checkConfigAndShowError(): Boolean {
         val error = checkConfig()
         error?.let {
-            errorLabel?.text = error
+            infoLabel?.text = error
             return true
         }
         return false
@@ -182,10 +190,10 @@ class ConfigBuilder : Initializable {
         return (if (buffer.isEmpty()) null else "Next states are invalid:\n$buffer")
     }
 
-    private fun sendError(error: String) {
-        errorLabel?.let {
-            it.text = error
+    private fun sendInfo(info: String) {
+        infoLabel?.let {
+            it.text = info
         }
-        Logger.getGlobal().warning(error)
+        Logger.getGlobal().info(info)
     }
 }

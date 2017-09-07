@@ -1,13 +1,12 @@
 package com.github.insanusmokrassar.FSMConfigBuilder.utils
 
-import javafx.scene.Scene
-import java.util.EmptyStackException
-import java.io.IOException
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.stage.Stage
+import java.io.IOException
 import java.net.URL
-import java.util.Stack
+import java.util.*
 
 
 class ScenesManager

@@ -20,20 +20,10 @@
       </ToolBar>
    </top>
    <bottom>
-      <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <items>
-            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
-               <content>
-                  <Label fx:id="previewLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Here will config preview" wrapText="true" />
-               </content>
-            </ScrollPane>
-            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
-                <content>
-                    <Label fx:id="errorLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Here will errors" wrapText="true" />
-                </content>
-            </ScrollPane>
-        </items>
-      </SplitPane>
+       <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+           <Label fx:id="infoLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  text="Here will errors" wrapText="true"/>
+       </ScrollPane>
    </bottom>
    <center>
       <TableView fx:id="statesTableView" editable="true" minHeight="165.0" prefHeight="165.0" BorderPane.alignment="CENTER">
@@ -51,8 +41,8 @@
    <right>
       <ToolBar nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" BorderPane.alignment="CENTER">
          <items>
-            <Button fx:id="addRowBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-            <Button fx:id="addRowBtn1" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" />
+            <Button fx:id="addBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
+            <Button fx:id="removeBtn" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" />
              <Button fx:id="generateBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Generate" />
          </items>
       </ToolBar>
